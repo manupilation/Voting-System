@@ -1,6 +1,7 @@
 package com.trybe.acc.java.sistemadevotacao;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 
 /** 
  * Classe de gerenciamento da votação.
@@ -12,7 +13,7 @@ public class GerenciamentoVotacao {
   
   private ArrayList<String> cpfComputado = new ArrayList<String>();
   
-  private int totalVotos;
+  private int totalVotos = 0;
   
   /** 
    * Método que cadastra uma pessoa candidata.
@@ -64,17 +65,39 @@ public class GerenciamentoVotacao {
       if (pessoa.getNumero() == numeroPessoaCandidata) {
         pessoa.receberVoto();
         cpfComputado.add(cpfPessoaEleitora);
+        totalVotos += 1;
         break;
       }
     } 
   }
   
   public void mostrarResultado() {
+    if (totalVotos == 0) {
+      System.out.println("É preciso ter pelo menos um voto para mostrar o resultado.");
+      return;
+    }
     
+    for (PessoaCandidata pessoa: pessoasCandidatas) {
+      String nomeCandidato = pessoa.getNome();
+      int votos = pessoa.getVotos();
+      double percentage = calcularPorcentagemVotos(votos);
+      
+      Formatter formatter = new Formatter();
+      
+      formatter.format("Nome: %s - %d votos ( %.1f%% )", nomeCandidato, votos, percentage);
+      String data = formatter.toString();
+      formatter.close();
+      
+      System.out.println(data);
+    }
   }
   
-  private double calcularPorcentagemVotos(int indexPessoaCandidata) {
-    return 0;
+  private double calcularPorcentagemVotos(int votosPessoaCandidata) {
+    if (votosPessoaCandidata == 0) {
+      return 0;      
+    }
+    
+    return (double) votosPessoaCandidata * 100 / totalVotos;
   }
   
 }
