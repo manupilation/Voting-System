@@ -71,13 +71,16 @@ public class GerenciamentoVotacao {
     } 
   }
   
+  /** 
+   * Método utilizado para printar os resultados parciais ou totais da eleição.
+   **/
   public void mostrarResultado() {
     if (totalVotos == 0) {
       System.out.println("É preciso ter pelo menos um voto para mostrar o resultado.");
       return;
     }
     
-    for (PessoaCandidata pessoa: pessoasCandidatas) {
+    for (PessoaCandidata pessoa : pessoasCandidatas) {
       String nomeCandidato = pessoa.getNome();
       int votos = pessoa.getVotos();
       double percentage = calcularPorcentagemVotos(votos);
