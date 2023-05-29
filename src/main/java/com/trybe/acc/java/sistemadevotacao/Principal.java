@@ -19,6 +19,10 @@ public class Principal {
     
     boolean votacaoProcess = false;
     
+    GerenciamentoVotacao gerenciamentoVotacao = new GerenciamentoVotacao();
+    
+    printMessage("----------- Bem-vindo ao Sistema de Votação -----------\n");
+    
     do {      
       printStartPessoaCandidata();
       
@@ -28,6 +32,12 @@ public class Principal {
         printSendNameCandidato();
         
         final String name = scanner.next();
+        
+        printSendNumberCandidato();
+        
+        final int numberCandidato = scanner.nextInt();
+        
+        gerenciamentoVotacao.cadastrarPessoaCandidata(name, numberCandidato);
  
       } else {
         candidatosProcess = false;
@@ -36,6 +46,7 @@ public class Principal {
 
     } while (candidatosProcess);
 
+    printMessage("\n----------- Cadastre as pessoas eleitoras -----------\n");
 
     do {
       printLoopPessoaEleitora();
@@ -51,12 +62,16 @@ public class Principal {
         
         final String cpf = scanner.next();
         
+        gerenciamentoVotacao.cadastrarPessoaEleitora(name, cpf);
+        
       } else {
         eleitoresProcess = false;
         votacaoProcess = true;
       }
       
     } while (eleitoresProcess);
+    
+    printMessage("\n----------- Votação iniciada! -----------\n");
     
     do {
       printLoopVotacao();
@@ -71,17 +86,20 @@ public class Principal {
         printNumeroPessoaCandidata();
         
         short voto = scanner.nextShort();
+        
+        gerenciamentoVotacao.votar(cpf, voto);
 
       } else if (option == 2) {
-        // Resultado parcial
+        gerenciamentoVotacao.mostrarResultado();
       } else {
-        // Finalizar votação
+        gerenciamentoVotacao.mostrarResultado();
         votacaoProcess = false;
       }
       
     } while (votacaoProcess);
 
     scanner.close();
+    
   }
   
   
@@ -100,7 +118,9 @@ public class Principal {
     printMessage("Entre com o nome da pessoa candidata:");
   }
   
-
+  private static void printSendNumberCandidato() {
+    printMessage("Entre com o número da pessoa candidata:");
+  }
   
   private static void printLoopPessoaEleitora() {
     printMessage("Cadastrar pessoa eleitora?");
